@@ -4,7 +4,7 @@
 ########################################################################
 
 module "spotinst_ocean_controller" {
-  source = "git::git@github.com:spotinst/terraform-modules.git//spotinst_ocean_controller/?ref=v0.1.0"
+  source = "github.com/spotinst/terraform-spotinst-modules//spotinst_ocean_controller/?ref=v0.1.0"
 
   config_context_cluster = ""
 

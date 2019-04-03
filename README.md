@@ -7,7 +7,7 @@ If you are new to Terraform Modules, check out Hashicorp's [quick overview.](htt
 1. To use a module from this repository, add a block like the following to your terraform code:
 ```
 module "example" {
-  source = "git::git@github.com:spotinst/terraform-modules.git//example?ref=v0.1.0"
+  source = "github.com/spotinst/terraform-spotinst-modules//example?ref=v0.1.0"
 
   param     = "foo"
   param_two = "bar"
