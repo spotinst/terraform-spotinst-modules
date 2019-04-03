@@ -42,6 +42,7 @@ We currently support authentication through either static host/username/password
 From within ./example, run the following commands:
 ```
 terraform get
+terraform init
 terrafomr apply
 ```
 

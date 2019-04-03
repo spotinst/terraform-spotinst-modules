@@ -15,7 +15,8 @@ module "example" {
 ```
 2. Ensure that the ref above corresponds to an existing release tag in this repository.
 3. Run terraform get to acquire the module.
-4. Run terraform plan to preview changes.
+4. Run terraform init
+5. Run terraform plan to preview changes.
 
 ## Feedback
 If there's a feature, new module, or change you'd like to see - let us know! 
