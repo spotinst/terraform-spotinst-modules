@@ -1,11 +1,3 @@
-provider "kubernetes" {
-  config_context_cluster = "${var.config_context_cluster}"
-  
-  host = "${var.host}"
-  username = "${var.username}"
-  password = "${var.password}"
-}
-
 resource "kubernetes_config_map" "configmap" {
   metadata {
     name = "spotinst-kubernetes-cluster-controller-config"
