@@ -12,9 +12,6 @@ This module manages the following resources:
 	* kubernetes_deployment
 
 ## Variables
-* host
-* username
-* password
 * spotinst_account
 * spotinst_token
 * spotinst_cluster_identifier
@@ -25,19 +22,11 @@ Fill in the following arguments in example.tf:
 module "spotinst_ocean_controller" {
   source = "github.com/spotinst/terraform-spotinst-modules//spotinst_ocean_controller/?ref=v0.1.0"
 
-  config_context_cluster = ""
-
-  # host = ""
-  # username = ""
-  # password = ""
-
   spotinst_account = ""
   spotinst_token = ""
   spotinst_cluster_identifier = ""
 }
 ```
-
-We currently support authentication through either static host/username/password or through use of kubeconfig. Please update the template with your preferred method.
 
 From within ./example, run the following commands:
 ```
