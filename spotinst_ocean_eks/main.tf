@@ -20,37 +20,6 @@ resource "random_string" "suffix" {
   special = false
 }
 
-resource "aws_security_group" "worker_group_mgmt_one" {
-  name_prefix = "worker_group_mgmt_one"
-  description = "SG to be applied to all *nix machines"
-  vpc_id      = "${module.vpc.vpc_id}"
-
-  ingress {
-    from_port = 22
-    to_port   = 22
-    protocol  = "tcp"
-
-    cidr_blocks = [
-      "10.0.0.0/8",
-    ]
-  }
-}
-
-resource "aws_security_group" "worker_group_mgmt_two" {
-  name_prefix = "worker_group_mgmt_two"
-  vpc_id      = "${module.vpc.vpc_id}"
-
-  ingress {
-    from_port = 22
-    to_port   = 22
-    protocol  = "tcp"
-
-    cidr_blocks = [
-      "192.168.0.0/16",
-    ]
-  }
-}
-
 resource "aws_security_group" "all_worker_mgmt" {
   name_prefix = "all_worker_management"
   vpc_id      = "${module.vpc.vpc_id}"
@@ -70,7 +39,7 @@ resource "aws_security_group" "all_worker_mgmt" {
 
 module "vpc" {
   source             = "terraform-aws-modules/vpc/aws"
-  version            = "1.14.0"
+  version            = "1.60.0"
   name               = "${local.cluster_name}"
   cidr               = "10.0.0.0/16"
   azs                = ["${data.aws_availability_zones.available.names[0]}", "${data.aws_availability_zones.available.names[1]}", "${data.aws_availability_zones.available.names[2]}"]
@@ -89,57 +58,7 @@ module "eks" {
   vpc_id             = "${module.vpc.vpc_id}"
   worker_group_count = 0
 
-  worker_additional_security_group_ids = ["${aws_security_group.all_worker_mgmt.id}"]
-  
-  map_roles_count = 1
-  map_roles       = [
-    {
-      role_arn = "${aws_iam_role.workers.arn}"
-      username = "spot_worker"
-      group = "system:masters"
-    }
-  ]
-}
-
-resource "aws_iam_role" "workers" {
-  name_prefix           = "${local.cluster_name}"
-  assume_role_policy    = "${data.aws_iam_policy_document.workers_assume_role_policy.json}"
-  force_detach_policies = true
-}
-
-resource "aws_iam_instance_profile" "workers_profile" {
-  name_prefix = "${local.cluster_name}"
-  role        = "${aws_iam_role.workers.name}"
-}
-
-resource "aws_iam_role_policy_attachment" "workers_AmazonEKSWorkerNodePolicy" {
-  policy_arn = "arn:aws:iam::aws:policy/AmazonEKSWorkerNodePolicy"
-  role       = "${aws_iam_role.workers.name}"
-}
-
-resource "aws_iam_role_policy_attachment" "workers_AmazonEKS_CNI_Policy" {
-  policy_arn = "arn:aws:iam::aws:policy/AmazonEKS_CNI_Policy"
-  role       = "${aws_iam_role.workers.name}"
-}
-
-resource "aws_iam_role_policy_attachment" "workers_AmazonEC2ContainerRegistryReadOnly" {
-  policy_arn = "arn:aws:iam::aws:policy/AmazonEC2ContainerRegistryReadOnly"
-  role       = "${aws_iam_role.workers.name}"
-}
-
-data "aws_iam_policy_document" "workers_assume_role_policy" {
-  statement {
-    sid = "EKSWorkerAssumeRole"
-
-    actions = [
-      "sts:AssumeRole",
-    ]
-
-    principals {
-      type        = "Service"
-      identifiers = ["ec2.amazonaws.com"]
-    }
-  }
+  worker_additional_security_group_ids = ["${aws_security_group.all_worker_mgmt.id}"]  
 }
 
 # Create an Elastigroup
@@ -155,7 +74,7 @@ resource "spotinst_ocean_aws" "tf_ocean_cluster" {
   subnet_ids = ["${module.vpc.private_subnets}"]
   
   image_id        = "${var.ami}" 
-  security_groups = ["${aws_security_group.all_worker_mgmt.id}","${module.eks.cluster_security_group_id}"]
+  security_groups = ["${aws_security_group.all_worker_mgmt.id}","${module.eks.worker_security_group_id}"]
   key_name        = "${var.key_name}"
 
   associate_public_ip_address = true
@@ -166,7 +85,7 @@ resource "spotinst_ocean_aws" "tf_ocean_cluster" {
       /etc/eks/bootstrap.sh ${local.cluster_name}
       EOF
 
-  iam_instance_profile = "${aws_iam_instance_profile.workers_profile.arn}"
+  iam_instance_profile = "${module.eks.worker_iam_instance_profile_arns.0}"
 
   tags = [
     {
