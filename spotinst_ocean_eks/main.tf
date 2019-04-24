@@ -146,7 +146,7 @@ data "aws_iam_policy_document" "workers_assume_role_policy" {
 resource "spotinst_ocean_aws" "tf_ocean_cluster" {
   name          = "${var.ocean_cluster_name}"
   controller_id = "${var.controller_id}"
-  region        = "${module.aws.region}"
+  region        = "${var.region}"
 
   max_size         = "${var.max_size}"
   min_size         = "${var.min_size}"
@@ -157,6 +157,8 @@ resource "spotinst_ocean_aws" "tf_ocean_cluster" {
   image_id        = "${var.ami}" 
   security_groups = ["${aws_security_group.all_worker_mgmt.id}","${module.eks.cluster_security_group_id}"]
   key_name        = "${var.key_name}"
+
+  associate_public_ip_address = true
   
   user_data = <<-EOF
       #!/bin/bash

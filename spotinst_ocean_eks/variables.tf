@@ -1,3 +1,7 @@
+variable "region" {
+  description = "The region the EKS cluster will be located."
+}
+
 variable "ami" {
   description = "An ami that is compatible with your desired version of kubernetes."
 }
