@@ -50,6 +50,34 @@ module "vpc" {
   tags               = "${merge(local.tags, map("kubernetes.io/cluster/${local.cluster_name}", "shared"))}"
 }
 
+resource "aws_iam_role" "workers" {
+  name_prefix           = "${local.cluster_name}"
+  assume_role_policy    = "${data.aws_iam_policy_document.workers_assume_role_policy.json}"
+  force_detach_policies = true
+}
+
+resource "aws_iam_instance_profile" "workers" {
+  name_prefix = "${local.cluster_name}"
+  role        = "${aws_iam_role.workers.name}"
+}
+
+resource "aws_iam_role_policy_attachment" "workers_AmazonEKSWorkerNodePolicy" {
+  policy_arn = "arn:aws:iam::aws:policy/AmazonEKSWorkerNodePolicy"
+  role       = "${aws_iam_role.workers.name}"
+}
+
+resource "aws_iam_role_policy_attachment" "workers_AmazonEKS_CNI_Policy" {
+  policy_arn = "arn:aws:iam::aws:policy/AmazonEKS_CNI_Policy"
+  role       = "${aws_iam_role.workers.name}"
+}
+
+resource "aws_iam_role_policy_attachment" "workers_AmazonEC2ContainerRegistryReadOnly" {
+  policy_arn = "arn:aws:iam::aws:policy/AmazonEC2ContainerRegistryReadOnly"
+  role       = "${aws_iam_role.workers.name}"
+}
+
+
+
 module "eks" {
   source             = "terraform-aws-modules/eks/aws"
   cluster_name       = "${local.cluster_name}"
@@ -58,7 +86,15 @@ module "eks" {
   vpc_id             = "${module.vpc.vpc_id}"
   worker_group_count = 0
 
-  worker_additional_security_group_ids = ["${aws_security_group.all_worker_mgmt.id}"]  
+  map_roles          = [
+    {
+      role_arn = "${aws_iam_role.workers.arn}"
+      username = "spotinst_workers_role"
+      group    = "system:masters"
+    },
+  ]
+
+  worker_additional_security_group_ids = ["${aws_security_group.all_worker_mgmt.id}"]
 }
 
 # Create an Elastigroup
@@ -70,22 +106,22 @@ resource "spotinst_ocean_aws" "tf_ocean_cluster" {
   max_size         = "${var.max_size}"
   min_size         = "${var.min_size}"
   desired_capacity = "${var.desired_capacity}"
-  
+
   subnet_ids = ["${module.vpc.private_subnets}"]
-  
-  image_id        = "${var.ami}" 
+
+  image_id        = "${var.ami}"
   security_groups = ["${aws_security_group.all_worker_mgmt.id}","${module.eks.worker_security_group_id}"]
   key_name        = "${var.key_name}"
 
-  associate_public_ip_address = true
-  
+  associate_public_ip_address = false
+
   user_data = <<-EOF
       #!/bin/bash
       set -o xtrace
       /etc/eks/bootstrap.sh ${local.cluster_name}
       EOF
 
-  iam_instance_profile = "${module.eks.worker_iam_instance_profile_arns.0}"
+  iam_instance_profile = "${aws_iam_instance_profile.workers.arn}"
 
   tags = [
     {
