@@ -86,6 +86,7 @@ module "eks" {
   vpc_id             = "${module.vpc.vpc_id}"
   worker_group_count = 0
 
+  map_roles_count    = 1
   map_roles          = [
     {
       role_arn = "${aws_iam_role.workers.arn}"
