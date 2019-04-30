@@ -8,7 +8,6 @@ locals {
   cluster_name = "ocean-eks-${random_string.suffix.result}"
 
   tags = {
-    Environment = "${var.environment}"
     GithubRepo  = "terraform-aws-eks"
     GithubOrg   = "terraform-aws-modules"
     Workspace   = "${terraform.workspace}"
@@ -125,10 +124,6 @@ resource "spotinst_ocean_aws" "tf_ocean_cluster" {
   iam_instance_profile = "${aws_iam_instance_profile.workers.arn}"
 
   tags = [
-    {
-      key = "Environment"
-      value = "${var.environment}"
-    },
     {
       key = "Workspace" 
       value = "${terraform.workspace}"

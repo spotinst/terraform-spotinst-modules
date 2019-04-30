@@ -29,7 +29,3 @@ variable "desired_capacity" {
 variable "key_name" {
   description = "The key pair to attach the instances."
 }
-
-variable "environment" {
-  description = "The kind of environment you wish to create (dev, prod, etc)."
-}

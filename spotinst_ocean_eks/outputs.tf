@@ -32,3 +32,8 @@ output "controller_id" {
   description = "controller_id of controlling node"
   value       = "${var.controller_id}"
 }
+
+output "cluster_id" {
+  description = "cluster_id"
+  value = "${module.eks.cluster_id}"
+}
