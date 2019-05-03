@@ -14,7 +14,7 @@ provider "spotinst" {
 }
 
 module "spotinst_ocean_eks" {
-  source = "github.com/alexindeed/terraform-spotinst-modules//spotinst_ocean_eks"
+  source = "github.com/spotinst/terraform-spotinst-modules//spotinst_ocean_eks"
 
   ocean_cluster_name = "example-test-cluster"
   controller_id      = "example-cluster-id"
