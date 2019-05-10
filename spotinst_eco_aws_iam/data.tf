@@ -59,9 +59,9 @@ data "aws_iam_policy_document" "spotinst_eco_policy_read" {
     ]
 
     resources = [
-      "arn:aws:s3::::${var.cost_usage_bucket}/*"
+      "arn:aws:s3:::${var.cost_usage_bucket}/*"
     ]
-             
+
   }
-  
+
 }
