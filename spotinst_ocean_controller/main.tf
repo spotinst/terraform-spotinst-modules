@@ -95,7 +95,7 @@ resource "kubernetes_cluster_role_binding" "default" {
     api_group = ""
     kind = "ServiceAccount"
     name = "spotinst-kubernetes-cluster-controller"
-    namespace = "kube-system" 
+    namespace = "kube-system"
   }
 }
 
@@ -104,7 +104,7 @@ resource "kubernetes_cluster_role_binding" "default" {
 resource "kubernetes_deployment" "default" {
   metadata {
     name = "spotinst-kubernetes-cluster-controller"
-    namespace = "kube-system" 
+    namespace = "kube-system"
     labels {
       k8s-app = "spotinst-kubernetes-cluster-controller"
     }
@@ -185,7 +185,7 @@ resource "kubernetes_deployment" "default" {
               }
             }
           }
-        }  
+        }
 
         volume {
           name = "spotinst-kubernetes-cluster-controller-certs"
@@ -205,7 +205,7 @@ resource "kubernetes_deployment" "default" {
             secret_name = "${kubernetes_service_account.default.default_secret_name}"
           }
         }
-        
+
         service_account_name = "spotinst-kubernetes-cluster-controller"
       }
     }
