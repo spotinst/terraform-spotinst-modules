@@ -129,7 +129,7 @@ resource "kubernetes_deployment" "default" {
       spec {
 
         container {
-          image = "spotinst/kubernetes-cluster-controller:1.0.30"
+          image = "spotinst/kubernetes-cluster-controller:${data.external.version.result["version"]}"
           name  = "spotinst-kubernetes-cluster-controller"
           image_pull_policy = "Always"
 
@@ -212,4 +212,6 @@ resource "kubernetes_deployment" "default" {
   }
 }
 
-
+data "external" "version" {
+  program = ["curl", "https://s3-eu-west-1.amazonaws.com/spotinst-vers/controller.json"]
+}
