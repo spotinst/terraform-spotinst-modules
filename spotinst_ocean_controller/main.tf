@@ -40,20 +40,20 @@ resource "kubernetes_cluster_role" "default" {
 
   rule {
     api_groups = [""]
-    resources = ["pods", "nodes", "replicationcontrollers", "events", "limitranges", "services", "persistentvolumes", "persistentvolumeclaims"]
-    verbs = ["get", "delete", "list", "patch", "update"]
+    resources = ["pods", "nodes", "replicationcontrollers", "events", "limitranges", "services", "persistentvolumes", "persistentvolumeclaims", "namespaces"]
+    verbs = ["get", "delete", "list", "patch", "update", "create"]
   }
 
   rule {
     api_groups = ["apps"]
-    resources = ["deployments"]
-    verbs = ["get","list","patch"]
+    resources = ["deployments", "daemonsets"]
+    verbs = ["get","list","patch","create","delete"]
   }
 
   rule {
     api_groups = ["extensions"]
-    resources = ["replicasets"]
-    verbs = ["get","list"]
+    resources = ["replicasets", "daemonsets"]
+    verbs = ["get","list","create","patch","delete"]
   }
 
   rule {
@@ -95,7 +95,7 @@ resource "kubernetes_cluster_role_binding" "default" {
     api_group = ""
     kind = "ServiceAccount"
     name = "spotinst-kubernetes-cluster-controller"
-    namespace = "kube-system" 
+    namespace = "kube-system"
   }
 }
 
@@ -104,7 +104,7 @@ resource "kubernetes_cluster_role_binding" "default" {
 resource "kubernetes_deployment" "default" {
   metadata {
     name = "spotinst-kubernetes-cluster-controller"
-    namespace = "kube-system" 
+    namespace = "kube-system"
     labels {
       k8s-app = "spotinst-kubernetes-cluster-controller"
     }
@@ -129,7 +129,7 @@ resource "kubernetes_deployment" "default" {
       spec {
 
         container {
-          image = "spotinst/kubernetes-cluster-controller:1.0.30"
+          image = "spotinst/kubernetes-cluster-controller:${data.external.version.result["version"]}"
           name  = "spotinst-kubernetes-cluster-controller"
           image_pull_policy = "Always"
 
@@ -185,7 +185,7 @@ resource "kubernetes_deployment" "default" {
               }
             }
           }
-        }  
+        }
 
         volume {
           name = "spotinst-kubernetes-cluster-controller-certs"
@@ -205,11 +205,13 @@ resource "kubernetes_deployment" "default" {
             secret_name = "${kubernetes_service_account.default.default_secret_name}"
           }
         }
-        
+
         service_account_name = "spotinst-kubernetes-cluster-controller"
       }
     }
   }
 }
 
-
+data "external" "version" {
+  program = ["curl", "https://s3-eu-west-1.amazonaws.com/spotinst-vers/controller.json"]
+}
