@@ -8,9 +8,6 @@ locals {
   cluster_name = "ocean-eks-${random_string.suffix.result}"
 
   tags = {
-    GithubRepo  = "terraform-aws-eks"
-    GithubOrg   = "terraform-aws-modules"
-    Workspace   = "${terraform.workspace}"
   }
 }
 
@@ -89,8 +86,8 @@ module "eks" {
   map_roles          = [
     {
       role_arn = "${aws_iam_role.workers.arn}"
-      username = "spotinst_workers_role"
-      group    = "system:masters"
+      username = "system:node:{{EC2PrivateDNSName}}"
+      group = "system:nodes"
     },
   ]
 
@@ -124,10 +121,6 @@ resource "spotinst_ocean_aws" "tf_ocean_cluster" {
   iam_instance_profile = "${aws_iam_instance_profile.workers.arn}"
 
   tags = [
-    {
-      key = "Workspace" 
-      value = "${terraform.workspace}"
-    },
     {
       key = "Name"
       value = "${local.cluster_name}-ocean_cluster-Node"
