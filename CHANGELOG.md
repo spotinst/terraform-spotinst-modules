@@ -2,7 +2,7 @@
 All notable changes to this project will be documented in this file.
 This project adheres to [Semantic Versioning](http://semver.org/).
 
-## [1.0.5] - 2019-05-10
+## [1.0.5] - 2019-05-19
 ### Fixed
 - `spotinst_ocean_eks` map_roles for system:node
 
