@@ -6,6 +6,11 @@ variable "ami" {
   description = "An ami that is compatible with your desired version of kubernetes."
 }
 
+variable "cluster_version" {
+  description = "EKS k8s supported version"
+  default = "1.12"
+}
+
 variable "ocean_cluster_name" {
   description = "The name you would like associated with your ocean cluster."
 }

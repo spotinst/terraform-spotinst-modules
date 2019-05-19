@@ -13,6 +13,11 @@ output "kubectl_config" {
   value       = "${module.eks.kubeconfig}"
 }
 
+output "kubeconfig_filename" {
+  description = "The filename of the generated kubectl config."
+  value       = "${module.eks.kubeconfig_filename}"
+}
+
 output "config_map_aws_auth" {
   description = ""
   value       = "${module.eks.config_map_aws_auth}"
