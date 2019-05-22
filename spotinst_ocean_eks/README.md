@@ -35,7 +35,7 @@ From within ./example, run the following commands:
 ```
 terraform get
 terraform init
-terrafomr apply
+terraform apply
 ```
 
 You will see "Apply complete!" if your plan is applied successfully. You will need to install the Spotinst Ocean controller in order to see node status updates.
