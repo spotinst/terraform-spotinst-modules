@@ -26,6 +26,6 @@ module "spotinst_ocean_eks" {
   max_size         = "${var.max_size}"
   desired_capacity = "${var.min_size}"
 
-  ami         = "${var.ami}""
-  key_name    = "${var.keypair}"
+  ami         = "${var.ami}"
+  key_name    = "${var.key_name}"
 }
