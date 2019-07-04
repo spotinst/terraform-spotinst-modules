@@ -75,6 +75,7 @@ resource "aws_iam_role_policy_attachment" "workers_AmazonEC2ContainerRegistryRea
 
 
 module "eks" {
+  version 	     = "v4.0.2" # requiered for terraform version < 0.12
   source             = "terraform-aws-modules/eks/aws"
   cluster_name       = "${local.cluster_name}"
   subnets            = ["${module.vpc.private_subnets}"]
@@ -147,4 +148,18 @@ resource "spotinst_ocean_aws" "tf_ocean_cluster" {
   }
 
   depends_on = ["module.eks"]
+}
+
+# Installing controller
+resource "null_resource" "controller_installation" {
+  provisioner "local-exec" {
+    command = <<EOT
+      curl https://spotinst-public.s3.amazonaws.com/integrations/kubernetes/cluster-controller/templates/spotinst-kubernetes-controller-config-map.yaml -o configMap.yaml
+      sed -i '' -e "s@<TOKEN>@${var.spotinst_token}@g" configMap.yaml
+      sed -i '' -e "s@<ACCOUNT_ID>@${var.spotinst_account}@g" configMap.yaml
+      sed -i '' -e "s@<IDENTIFIER>@${var.controller_id}@g" configMap.yaml
+      kubectl --kubeconfig=${module.eks.kubeconfig_filename} apply -f configMap.yaml
+      kubectl --kubeconfig=${module.eks.kubeconfig_filename} apply -f https://s3.amazonaws.com/spotinst-public/integrations/kubernetes/cluster-controller/spotinst-kubernetes-cluster-controller-ga.yaml
+    EOT
+  }  
 }

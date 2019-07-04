@@ -34,3 +34,7 @@ variable "desired_capacity" {
 variable "key_name" {
   description = "The key pair to attach the instances."
 }
+
+variable "spotinst_token" {}
+
+variable "spotinst_account" {}

@@ -1,6 +1,6 @@
 provider "aws" {
   version = ">= 1.47.0"
-  region  = "us-west-2"
+  region  = "${var.region}"
 }
 
 // used when creating EKS cluster name
@@ -9,21 +9,23 @@ provider "random" {
 }
 
 provider "spotinst" {
-   token   = "your spotisnt token"
-   account = "your spotinst account id"
+   token   = "${var.spotinst_token}"
+   account = "${var.spotinst_account}"
 }
 
 module "spotinst_ocean_eks" {
   source = "github.com/spotinst/terraform-spotinst-modules//spotinst_ocean_eks"
+  
+  spotinst_token = "${var.spotinst_token}"
+  spotinst_account = "${var.spotinst_accouint}"
+  ocean_cluster_name = "${var.ocean_cluster_name}"
+  controller_id      = "${var.controller_id}"
+  region             = "${var.region}"
 
-  ocean_cluster_name = "example-test-cluster"
-  controller_id      = "example-cluster-id"
-  region             = "us-west-2"
+  min_size         = "${var.min_size}"
+  max_size         = "${var.max_size}"
+  desired_capacity = "${var.min_size}"
 
-  min_size         = 1
-  max_size         = 5
-  desired_capacity = 3
-
-  ami         = "ami-0923e4b35a30a5f53"
-  key_name    = "example-ssh-key-name"
+  ami         = "${var.ami}""
+  key_name    = "${var.keypair}"
 }
