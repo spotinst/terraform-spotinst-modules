@@ -17,7 +17,7 @@ module "spotinst_ocean_eks" {
   source = "github.com/spotinst/terraform-spotinst-modules//spotinst_ocean_eks"
   
   spotinst_token = "${var.spotinst_token}"
-  spotinst_account = "${var.spotinst_accouint}"
+  spotinst_account = "${var.spotinst_account}"
   ocean_cluster_name = "${var.ocean_cluster_name}"
   controller_id      = "${var.controller_id}"
   region             = "${var.region}"
