@@ -4,7 +4,7 @@ This module will create a new AWS EKS cluster and link it to a newly created Spo
 The module will install the Spotinst Kuberentes controller on top of the cluster.
 
 ## Example Use
-Go to the example dir.
+Go to the examples dir.
 Fill the variables.tf file.
 
 ## Variables
@@ -18,7 +18,7 @@ Fill the variables.tf file.
 * spotinst_token
 * spotinst_account
 
-From within ./example, run the following commands:
+From within ./examples, run the following commands:
 ```
 terraform get
 terraform init
