@@ -3,7 +3,7 @@ variable "spotinst_token" {
 }
 
 variable "spotinst_account" {
-  default = "your_account""
+  default = "your_account"
 }
 
 variable "region" {
@@ -14,7 +14,7 @@ variable "ami" {
   default = "ami-0923e4b35a30a5f53"
 }
 
-variable "keyname" {
+variable "key_name" {
   default = "your_key_name"
 }
 
@@ -31,6 +31,6 @@ variable "min_size" {
   description = "Should be at least 1"
 }
 
-variable "max_size {
+variable "max_size" {
   default = 1000
 }
