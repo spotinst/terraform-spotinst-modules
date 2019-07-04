@@ -11,9 +11,8 @@ Fill the variables.tf file.
 * ocean_cluster_name
 * controller_id
 * region
-* min_size
+* min_size (should be at-least 1)
 * max_size
-* desired_capacity
 * ami
 * key_name
 * spotinst_token
