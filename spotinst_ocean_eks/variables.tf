@@ -34,3 +34,13 @@ variable "desired_capacity" {
 variable "key_name" {
   description = "The key pair to attach the instances."
 }
+
+variable "spotinst_token" {
+  description = "The spotinst token used for the controller configMap"
+  default = ""  
+}
+
+variable "spotinst_account" {
+  description = "The spotinst account-id used for the controller configMap"
+  default = ""
+}

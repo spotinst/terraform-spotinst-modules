@@ -1,37 +1,24 @@
 # spotinst_ocean_eks
 
 This module will create a new AWS EKS cluster and link it to a newly created Spotinst Ocean cluster in your account.
+The module will install the Spotinst Kuberentes controller on top of the cluster.
+
+## Example Use
+Go to the examples dir.
+Fill the variables.tf file.
 
 ## Variables
 * ocean_cluster_name
 * controller_id
 * region
-* min_size
+* min_size (should be at-least 1)
 * max_size
-* desired_capacity
 * ami
 * key_name
+* spotinst_token
+* spotinst_account
 
-## Example Use
-Fill in the following arguments in example.tf:
-```
-module "spotinst_ocean_eks" {
-  source = "github.com/alexindeed/terraform-spotinst-modules//spotinst_ocean_eks"
-
-  ocean_cluster_name = "example-test-cluster"
-  controller_id      = "example-cluster-id"
-  region             = "us-west-2"
-
-  min_size         = 1
-  max_size         = 5
-  desired_capacity = 3
-
-  ami         = "ami-0923e4b35a30a5f53"
-  key_name    = "example-ssh-key-name"
-}
-```
-
-From within ./example, run the following commands:
+From within ./examples, run the following commands:
 ```
 terraform get
 terraform init

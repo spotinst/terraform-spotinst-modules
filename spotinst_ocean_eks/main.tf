@@ -149,3 +149,22 @@ resource "spotinst_ocean_aws" "tf_ocean_cluster" {
 
   depends_on = ["module.eks"]
 }
+
+# Installing controller
+resource "null_resource" "controller_installation" {
+  provisioner "local-exec" {
+    command = <<EOT
+      if [ ! -z ${var.spotinst_account} -a ! -z ${var.spotinst_token} ]; then
+        curl https://spotinst-public.s3.amazonaws.com/integrations/kubernetes/cluster-controller/templates/spotinst-kubernetes-controller-config-map.yaml -o configMap.yaml
+        sed -i '' -e "s@<TOKEN>@${var.spotinst_token}@g" configMap.yaml
+        sed -i '' -e "s@<ACCOUNT_ID>@${var.spotinst_account}@g" configMap.yaml
+        sed -i '' -e "s@<IDENTIFIER>@${var.controller_id}@g" configMap.yaml
+        kubectl --kubeconfig=${module.eks.kubeconfig_filename} create -f configMap.yaml
+        kubectl --kubeconfig=${module.eks.kubeconfig_filename} create -f https://s3.amazonaws.com/spotinst-public/integrations/kubernetes/cluster-controller/spotinst-kubernetes-cluster-controller-ga.yaml
+        echo "Controller installed"
+      else 
+        echo "Account id and token has not been provided, therefore the spotinst-controller will not be created"
+      fi
+    EOT
+  }  
+}
