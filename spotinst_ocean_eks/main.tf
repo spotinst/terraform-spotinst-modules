@@ -5,7 +5,7 @@ terraform {
 data "aws_availability_zones" "available" {}
 
 locals {
-  cluster_name = "ocean-eks-${var.ocean_cluster_name}-${random_string.suffix.result}"
+  cluster_name = "ocean-eks-${random_string.suffix.result}"
 
   tags = {
   }
