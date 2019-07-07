@@ -36,9 +36,11 @@ variable "key_name" {
 }
 
 variable "spotinst_token" {
+  description = "The spotinst token used for the controller configMap"
   default = ""  
 }
 
 variable "spotinst_account" {
+  description = "The spotinst account-id used for the controller configMap"
   default = ""
 }
