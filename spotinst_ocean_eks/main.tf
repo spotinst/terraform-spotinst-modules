@@ -142,8 +142,8 @@ resource "spotinst_ocean_aws" "tf_ocean_cluster" {
     }
 
     resource_limits = {
-      max_vcpu       = 8
-      max_memory_gib = 30
+      max_vcpu       = 1000
+      max_memory_gib = 2000
     }
   }
 
