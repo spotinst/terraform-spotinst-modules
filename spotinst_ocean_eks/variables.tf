@@ -35,6 +35,10 @@ variable "key_name" {
   description = "The key pair to attach the instances."
 }
 
-variable "spotinst_token" {}
+variable "spotinst_token" {
+  default = ""  
+}
 
-variable "spotinst_account" {}
+variable "spotinst_account" {
+  default = ""
+}
