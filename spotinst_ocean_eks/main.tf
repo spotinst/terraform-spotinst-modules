@@ -158,9 +158,10 @@ resource "null_resource" "controller_installation" {
         echo "Downloading controller configMap"
         curl https://spotinst-public.s3.amazonaws.com/integrations/kubernetes/cluster-controller/templates/spotinst-kubernetes-controller-config-map.yaml -o configMap.yaml
         echo "Finished downloading controller configMap"
-        sed -i '' -e "s@<TOKEN>@${var.spotinst_token}@g" configMap.yaml
-        sed -i '' -e "s@<ACCOUNT_ID>@${var.spotinst_account}@g" configMap.yaml
-        sed -i '' -e "s@<IDENTIFIER>@${var.controller_id}@g" configMap.yaml
+        sed -i -e "s@<TOKEN>@${var.spotinst_token}@g" configMap.yaml
+        sed -i -e "s@<ACCOUNT_ID>@${var.spotinst_account}@g" configMap.yaml
+        sed -i -e "s@<IDENTIFIER>@${var.controller_id}@g" configMap.yaml
+        sleep 20
         echo "Creating controller configMap in k8s"
         kubectl --kubeconfig=${module.eks.kubeconfig_filename} create -f configMap.yaml
         echo "Created controller configMap in k8s. creating controller resources"
