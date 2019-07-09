@@ -152,6 +152,7 @@ resource "spotinst_ocean_aws" "tf_ocean_cluster" {
 
 # Installing controller
 resource "null_resource" "controller_installation" {
+  depends_on = ["module.eks","spotinst_ocean_aws.tf_ocean_cluster"]
   provisioner "local-exec" {
     command = <<EOT
       if [ ! -z ${var.spotinst_account} -a ! -z ${var.spotinst_token} ]; then
@@ -161,7 +162,6 @@ resource "null_resource" "controller_installation" {
         sed -i -e "s@<TOKEN>@${var.spotinst_token}@g" configMap.yaml
         sed -i -e "s@<ACCOUNT_ID>@${var.spotinst_account}@g" configMap.yaml
         sed -i -e "s@<IDENTIFIER>@${var.controller_id}@g" configMap.yaml
-        sleep 20
         echo "Creating controller configMap in k8s"
         kubectl --kubeconfig=${module.eks.kubeconfig_filename} create -f configMap.yaml
         echo "Created controller configMap in k8s. creating controller resources"
