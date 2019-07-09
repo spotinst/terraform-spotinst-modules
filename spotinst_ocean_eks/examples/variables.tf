@@ -19,11 +19,11 @@ variable "key_name" {
 }
 
 variable "ocean_cluster_name" {
-  default = "cluster_name"
+  default = "default_cluster_name"
 }
 
 variable "controller_id" {
-  default = "controller_id"
+  default = "default_controller_id"
 }
 
 variable "min_size" {
