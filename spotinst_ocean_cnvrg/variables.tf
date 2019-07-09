@@ -44,3 +44,7 @@ variable "spotinst_account" {
   description = "The spotinst account-id used for the controller configMap"
   default = ""
 }
+
+variable "cnvrg_app_domain" {
+  default = "default_cnvrg_app_domain"
+}
