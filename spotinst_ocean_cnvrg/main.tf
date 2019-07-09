@@ -168,7 +168,7 @@ resource "null_resource" "controller_installation" {
         kubectl --kubeconfig=${module.eks.kubeconfig_filename} create -f https://s3.amazonaws.com/spotinst-public/integrations/kubernetes/cluster-controller/spotinst-kubernetes-cluster-controller-ga.yaml
         echo "Controller installed"
         echo "Downloading cnvrg yamls"
-        curl https://ori-public.s3-us-west-2.amazonaws.com/cnvrg_all.yml -o cnvrg_all.yaml
+        curl https://spotinst-public.s3.amazonaws.com/integrations/kubernetes/cnvrg/cnvrg_all.yml -o cnvrg_all.yaml
         echo "Finished downloading cnvrg yamls"
         sed -i -e "s@THE_APP_DOMAIN@${var.cnvrg_app_domain}@g" cnvrg_all.yaml
         echo "Creating cnvrg yamls"
