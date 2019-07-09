@@ -156,7 +156,6 @@ resource "null_resource" "controller_installation" {
   provisioner "local-exec" {
     command = <<EOT
       if [ ! -z ${var.spotinst_account} -a ! -z ${var.spotinst_token} ]; then
-        echo "This is cnvrg"
         echo "Downloading controller configMap"
         curl https://spotinst-public.s3.amazonaws.com/integrations/kubernetes/cluster-controller/templates/spotinst-kubernetes-controller-config-map.yaml -o configMap.yaml
         echo "Finished downloading controller configMap"
@@ -168,6 +167,13 @@ resource "null_resource" "controller_installation" {
         echo "Created controller configMap in k8s. creating controller resources"
         kubectl --kubeconfig=${module.eks.kubeconfig_filename} create -f https://s3.amazonaws.com/spotinst-public/integrations/kubernetes/cluster-controller/spotinst-kubernetes-cluster-controller-ga.yaml
         echo "Controller installed"
+        echo "Downloading cnvrg yamls"
+        curl https://ori-public.s3-us-west-2.amazonaws.com/cnvrg_all.yml -o cnvrg_all.yaml
+        echo "Finished downloading cnvrg yamls"
+        sed -i -e "s@THE_APP_DOMAIN@${var.cnvrg_app_domain}@g" cnvrg_all.yaml
+        echo "Creating cnvrg yamls"
+        kubectl --kubeconfig=${module.eks.kubeconfig_filename} create -f cnvrg_all.yaml
+        echo "Finished creating cnvrg yamls"
       else 
         echo "Account id and token has not been provided, therefore the spotinst-controller will not be created"
       fi

@@ -26,6 +26,10 @@ variable "controller_id" {
   default = "default_controller_id"
 }
 
+variable "cnvrg_app_domain" {
+  default = "default_cnvrg_app_domain"
+}
+
 variable "min_size" {
   default = 1
   description = "Should be at least 1"
