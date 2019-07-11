@@ -97,7 +97,7 @@ module "eks" {
 
 # Create an Ocean
 resource "spotinst_ocean_aws" "tf_ocean_cluster" {
-  name          = "${var.ocean_cluster_name}"
+  name          = "spotinst-data-science-${var.ocean_cluster_name}"
   controller_id = "${var.controller_id}"
   region        = "${var.region}"
 
