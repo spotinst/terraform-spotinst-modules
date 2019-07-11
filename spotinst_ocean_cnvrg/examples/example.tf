@@ -28,4 +28,6 @@ module "spotinst_ocean_cnvrg" {
 
   ami         = "${var.ami}"
   key_name    = "${var.key_name}"
+
+  cnvrg_app_domain="${var.cnvrg_app_domain}"
 }
