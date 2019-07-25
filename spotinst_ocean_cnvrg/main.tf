@@ -170,7 +170,15 @@ resource "null_resource" "controller_installation" {
         echo "Downloading cnvrg yamls"
         curl https://spotinst-public.s3.amazonaws.com/integrations/kubernetes/cnvrg/cnvrg_all.yml -o cnvrg_all.yaml
         echo "Finished downloading cnvrg yamls"
-        sed -i -e "s@THE_APP_DOMAIN@${var.cnvrg_app_domain}@g" cnvrg_all.yaml
+        sed -i -e "s@PARAM_THE_APP_DOMAIN@${var.cnvrg_app_domain}@g" cnvrg_all.yaml
+        sed -i -e "s@PARAM_USER_NAME@${var.cnvrg_user_name}@g" cnvrg_all.yaml
+        sed -i -e "s@PARAM_USER_PASSWORD@${var.cnvrg_user_password}@g" cnvrg_all.yaml
+        sed -i -e "s@PARAM_USER_EMAIL@${var.cnvrg_user_email}@g" cnvrg_all.yaml
+        sed -i -e "s@PARAM_USER_ORG@${var.cnvrg_user_org}@g" cnvrg_all.yaml
+        sed -i -e "s@PARAM_STORAGE_BUCKET_REGION@${var.cnvrg_storage_bucket_region}@g" cnvrg_all.yaml
+        sed -i -e "s@PARAM_STORAGE_BUCKET_NAME@${var.cnvrg_storage_bucket_name}@g" cnvrg_all.yaml
+        sed -i -e "s@PARAM_USER_ACCESS_KEY@${var.cnvrg_user_access_key}@g" cnvrg_all.yaml
+        sed -i -e "s@PARAM_USER_SECRET_KEY@${var.cnvrg_user_secret_key}@g" cnvrg_all.yaml
         echo "Creating cnvrg yamls"
         kubectl --kubeconfig=${module.eks.kubeconfig_filename} create -f cnvrg_all.yaml
         echo "Finished creating cnvrg yamls"

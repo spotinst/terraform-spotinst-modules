@@ -30,6 +30,38 @@ variable "cnvrg_app_domain" {
   default = "default_cnvrg_app_domain"
 }
 
+variable "cnvrg_user_name" {
+  default = "default_cnvrg_user_name"
+}
+
+variable "cnvrg_user_password" {
+  default = "default_cnvrg_user_password"
+}
+
+variable "cnvrg_user_email" {
+  default = "default_cnvrg_user_email"
+}
+
+variable "cnvrg_user_org" {
+  default = "default_cnvrg_user_org"
+}
+
+variable "cnvrg_user_access_key" {
+  default = "default_cnvrg_user_access_key"
+}
+
+variable "cnvrg_user_secret_key" {
+  default = "default_cnvrg_user_secret_key"
+}
+
+variable "cnvrg_storage_bucket_name" {
+  default = "default_cnvrg_storage_bucket_name"
+}
+
+variable "cnvrg_storage_bucket_region" {
+  default = "default_cnvrg_storage_bucket_region"
+}
+
 variable "min_size" {
   default = 1
   description = "Should be at least 1"

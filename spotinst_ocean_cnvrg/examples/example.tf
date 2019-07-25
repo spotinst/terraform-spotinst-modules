@@ -30,4 +30,12 @@ module "spotinst_ocean_cnvrg" {
   key_name    = "${var.key_name}"
 
   cnvrg_app_domain="${var.cnvrg_app_domain}"
+  cnvrg_user_name="${var.cnvrg_user_name}"
+  cnvrg_user_password="${var.cnvrg_user_password}"
+  cnvrg_user_email="${var.cnvrg_user_email}"
+  cnvrg_user_org="${var.cnvrg_user_org}"
+  cnvrg_user_access_key="${var.cnvrg_user_access_key}"
+  cnvrg_user_secret_key="${var.cnvrg_user_secret_key}"
+  cnvrg_storage_bucket_name="${var.cnvrg_storage_bucket_name}"
+  cnvrg_storage_bucket_region="${var.cnvrg_storage_bucket_region}"
 }
