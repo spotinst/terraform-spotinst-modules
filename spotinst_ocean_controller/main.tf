@@ -45,8 +45,14 @@ resource "kubernetes_cluster_role" "default" {
   }
 
   rule {
+    api_groups = [""]
+    resources = ["pods/eviction"]
+    verbs = ["create"]
+  }
+
+  rule {
     api_groups = ["apps"]
-    resources = ["deployments", "daemonsets"]
+    resources = ["deployments", "daemonsets", "statefulsets"]
     verbs = ["get","list","patch","create","delete"]
   }
 
@@ -72,6 +78,18 @@ resource "kubernetes_cluster_role" "default" {
   rule {
     api_groups = ["metrics.k8s.io"]
     resources = ["pods"]
+    verbs = ["list"]
+  }
+
+  rule {
+    api_groups = ["storage.k8s.io"]
+    resources = ["storageclasses"]
+    verbs = ["get", "list", "watch"]
+  }
+
+  rule {
+    api_groups = ["batch"]
+    resources = ["jobs"]
     verbs = ["list"]
   }
 
@@ -129,7 +147,7 @@ resource "kubernetes_deployment" "default" {
       spec {
 
         container {
-          image = "spotinst/kubernetes-cluster-controller:latest"
+          image = "spotinst/kubernetes-cluster-controller:1.0.46"
           name  = "spotinst-kubernetes-cluster-controller"
           image_pull_policy = "Always"
 
