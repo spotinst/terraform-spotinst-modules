@@ -5,9 +5,9 @@ resource "kubernetes_config_map" "configmap" {
   }
 
   data = {
-    spotinst.token = "${var.spotinst_token}"
-    spotinst.account  = "${var.spotinst_account}"
-    spotinst.cluster-identifier = "${var.spotinst_cluster_identifier}"
+    "spotinst.token" = "${var.spotinst_token}"
+    "spotinst.account"  = "${var.spotinst_account}"
+    "spotinst.cluster-identifier" = "${var.spotinst_cluster_identifier}"
   }
 }
 
