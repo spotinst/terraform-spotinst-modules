@@ -213,7 +213,8 @@ resource "kubernetes_deployment" "default" {
         }
         volume {
           name = "tmp-volume"
-          empty_dir = {}
+          empty_dir {
+          }
         }
 
 
