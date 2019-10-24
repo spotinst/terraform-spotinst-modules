@@ -4,7 +4,7 @@ resource "kubernetes_config_map" "configmap" {
     namespace = "kube-system"
   }
 
-  data {
+  data = {
     spotinst.token = "${var.spotinst_token}"
     spotinst.account  = "${var.spotinst_account}"
     spotinst.cluster-identifier = "${var.spotinst_cluster_identifier}"
@@ -15,7 +15,7 @@ resource "kubernetes_secret" "default" {
   metadata {
     name = "spotinst-kubernetes-cluster-controller-certs"
     namespace = "kube-system"
-    labels {
+    labels = {
       k8s-app = "spotinst-kubernetes-cluster-controller"
     }
   }
@@ -26,7 +26,7 @@ resource "kubernetes_service_account" "default" {
   metadata {
     name = "spotinst-kubernetes-cluster-controller"
     namespace = "kube-system"
-    labels {
+    labels = {
       k8s-app = "spotinst-kubernetes-cluster-controller"
     }
   }
@@ -123,7 +123,7 @@ resource "kubernetes_deployment" "default" {
   metadata {
     name = "spotinst-kubernetes-cluster-controller"
     namespace = "kube-system"
-    labels {
+    labels = {
       k8s-app = "spotinst-kubernetes-cluster-controller"
     }
   }
@@ -132,14 +132,14 @@ resource "kubernetes_deployment" "default" {
     replicas = 1
     revision_history_limit = 10
     selector {
-      match_labels {
+      match_labels = {
         k8s-app = "spotinst-kubernetes-cluster-controller"
       }
     }
 
     template {
       metadata {
-        labels {
+        labels = {
           k8s-app = "spotinst-kubernetes-cluster-controller"
         }
       }
