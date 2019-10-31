@@ -34,3 +34,7 @@ variable "min_size" {
 variable "max_size" {
   default = 1000
 }
+
+variable "cluster_version" {
+  default = "1.14"
+}
