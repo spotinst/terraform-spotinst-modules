@@ -28,4 +28,5 @@ module "spotinst_ocean_eks" {
 
   ami         = "${var.ami}"
   key_name    = "${var.key_name}"
+  cluster_version = "${var.cluster_version}"
 }
