@@ -43,11 +43,11 @@ data "aws_iam_policy_document" "spotinst_eco_policy_read" {
       "s3:PutObject",
       "s3:ListBucket",
       "s3:PutObjectTagging",
-      "s3:PutObjectAcl"
+      "s3:PutObjectAcl",
     ]
 
     resources = [
-      "arn:aws:s3:::sc-customer-*"
+      "arn:aws:s3:::sc-customer-*",
     ]
   }
 
@@ -55,13 +55,11 @@ data "aws_iam_policy_document" "spotinst_eco_policy_read" {
     sid = "S3Billing"
 
     actions = [
-                "s3:get*"
+      "s3:get*",
     ]
 
     resources = [
-      "arn:aws:s3:::${var.cost_usage_bucket}/*"
+      "arn:aws:s3:::${var.cost_usage_bucket}/*",
     ]
-
   }
-
 }

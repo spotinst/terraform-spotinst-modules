@@ -3,6 +3,6 @@ variable "cost_usage_bucket" {
 }
 
 variable "access_type" {
-    description = "ro | full"
-    default = "ro"
+  description = "ro | full"
+  default     = "ro"
 }

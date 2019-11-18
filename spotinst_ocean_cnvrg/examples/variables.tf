@@ -63,7 +63,7 @@ variable "cnvrg_storage_bucket_region" {
 }
 
 variable "min_size" {
-  default = 1
+  default     = 1
   description = "Should be at least 1"
 }
 
