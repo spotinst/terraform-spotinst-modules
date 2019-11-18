@@ -40,5 +40,5 @@ output "controller_id" {
 
 output "cluster_id" {
   description = "cluster_id"
-  value = "${module.eks.cluster_id}"
+  value       = "${module.eks.cluster_id}"
 }

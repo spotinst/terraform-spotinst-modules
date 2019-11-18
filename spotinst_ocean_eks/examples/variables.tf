@@ -27,7 +27,7 @@ variable "controller_id" {
 }
 
 variable "min_size" {
-  default = 1
+  default     = 1
   description = "Should be at least 1"
 }
 

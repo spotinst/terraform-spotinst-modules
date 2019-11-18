@@ -7,8 +7,7 @@ data "aws_availability_zones" "available" {}
 locals {
   cluster_name = "ocean-eks-${random_string.suffix.result}"
 
-  tags = {
-  }
+  tags = {}
 }
 
 resource "random_string" "suffix" {
@@ -72,10 +71,8 @@ resource "aws_iam_role_policy_attachment" "workers_AmazonEC2ContainerRegistryRea
   role       = "${aws_iam_role.workers.name}"
 }
 
-
-
 module "eks" {
-  version            = "v4.0.2" # requiered for terraform version < 0.12
+  version            = "v4.0.2"                          # requiered for terraform version < 0.12
   source             = "terraform-aws-modules/eks/aws"
   cluster_name       = "${local.cluster_name}"
   cluster_version    = "${var.cluster_version}"
@@ -84,34 +81,30 @@ module "eks" {
   vpc_id             = "${module.vpc.vpc_id}"
   worker_group_count = 0
 
-  map_roles_count    = 1
-  map_roles          = [
+  map_roles_count = 1
+
+  map_roles = [
     {
       role_arn = "${aws_iam_role.workers.arn}"
       username = "system:node:{{EC2PrivateDNSName}}"
-      group = "system:nodes"
+      group    = "system:nodes"
     },
   ]
 
   worker_additional_security_group_ids = ["${aws_security_group.all_worker_mgmt.id}"]
 }
 
-# Create an Elastigroup
 resource "spotinst_ocean_aws" "tf_ocean_cluster" {
-  name          = "${var.ocean_cluster_name}"
-  controller_id = "${var.controller_id}"
-  region        = "${var.region}"
-
-  max_size         = "${var.max_size}"
-  min_size         = "${var.min_size}"
-  desired_capacity = "${var.desired_capacity}"
-
-  subnet_ids = ["${module.vpc.private_subnets}"]
-
-  image_id        = "${var.ami}"
-  security_groups = ["${aws_security_group.all_worker_mgmt.id}","${module.eks.worker_security_group_id}"]
-  key_name        = "${var.key_name}"
-
+  name                        = "${var.ocean_cluster_name}"
+  controller_id               = "${var.controller_id}"
+  region                      = "${var.region}"
+  max_size                    = "${var.max_size}"
+  min_size                    = "${var.min_size}"
+  desired_capacity            = "${var.desired_capacity}"
+  subnet_ids                  = ["${module.vpc.private_subnets}"]
+  image_id                    = "${var.ami}"
+  security_groups             = ["${aws_security_group.all_worker_mgmt.id}", "${module.eks.worker_security_group_id}"]
+  key_name                    = "${var.key_name}"
   associate_public_ip_address = false
 
   user_data = <<-EOF
@@ -124,13 +117,13 @@ resource "spotinst_ocean_aws" "tf_ocean_cluster" {
 
   tags = [
     {
-      key = "Name"
+      key   = "Name"
       value = "${local.cluster_name}-ocean_cluster-Node"
     },
     {
-      key = "kubernetes.io/cluster/${local.cluster_name}"
-      value =  "owned"
-    }
+      key   = "kubernetes.io/cluster/${local.cluster_name}"
+      value = "owned"
+    },
   ]
 
   autoscaler = {
@@ -151,9 +144,9 @@ resource "spotinst_ocean_aws" "tf_ocean_cluster" {
   depends_on = ["module.eks"]
 }
 
-# Installing controller
 resource "null_resource" "controller_installation" {
-  depends_on = ["module.eks","spotinst_ocean_aws.tf_ocean_cluster"]
+  depends_on = ["module.eks", "spotinst_ocean_aws.tf_ocean_cluster"]
+
   provisioner "local-exec" {
     command = <<EOT
       if [ ! -z ${var.spotinst_account} -a ! -z ${var.spotinst_token} ]; then
@@ -172,5 +165,5 @@ resource "null_resource" "controller_installation" {
         echo "Account id and token has not been provided, therefore the spotinst-controller will not be created"
       fi
     EOT
-  }  
+  }
 }

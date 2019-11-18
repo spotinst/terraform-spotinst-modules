@@ -3,12 +3,12 @@ variable "region" {
 }
 
 variable "ami" {
-  description = "An ami that is compatible with your desired version of kubernetes."
+  description = "An AMI that is compatible with your desired version of kubernetes."
 }
 
 variable "cluster_version" {
-  description = "EKS k8s supported version"
-  default = "1.12"
+  description = "Kubernetes supported version."
+  default     = "1.12"
 }
 
 variable "ocean_cluster_name" {
@@ -16,7 +16,7 @@ variable "ocean_cluster_name" {
 }
 
 variable "controller_id" {
-  description = "The id you would like associated with the controller node."
+  description = "The ID you would like associated with the controller node."
 }
 
 variable "min_size" {
@@ -36,11 +36,11 @@ variable "key_name" {
 }
 
 variable "spotinst_token" {
-  description = "The spotinst token used for the controller configMap"
-  default = ""  
+  description = "The Spotinst token used by the controller."
+  default     = ""
 }
 
 variable "spotinst_account" {
-  description = "The spotinst account-id used for the controller configMap"
-  default = ""
+  description = "The Spotinst account ID used by the controller."
+  default     = ""
 }

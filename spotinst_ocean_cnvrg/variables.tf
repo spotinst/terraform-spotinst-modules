@@ -8,7 +8,7 @@ variable "ami" {
 
 variable "cluster_version" {
   description = "EKS k8s supported version"
-  default = "1.12"
+  default     = "1.12"
 }
 
 variable "ocean_cluster_name" {
@@ -37,12 +37,12 @@ variable "key_name" {
 
 variable "spotinst_token" {
   description = "The spotinst token used for the controller configMap"
-  default = ""  
+  default     = ""
 }
 
 variable "spotinst_account" {
   description = "The spotinst account-id used for the controller configMap"
-  default = ""
+  default     = ""
 }
 
 variable "cnvrg_app_domain" {

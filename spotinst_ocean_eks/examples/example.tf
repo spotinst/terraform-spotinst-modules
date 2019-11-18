@@ -9,15 +9,15 @@ provider "random" {
 }
 
 provider "spotinst" {
-   token   = "${var.spotinst_token}"
-   account = "${var.spotinst_account}"
+  token   = "${var.spotinst_token}"
+  account = "${var.spotinst_account}"
 }
 
 module "spotinst_ocean_eks" {
   source = "github.com/spotinst/terraform-spotinst-modules//spotinst_ocean_eks"
-  
-  spotinst_token = "${var.spotinst_token}"
-  spotinst_account = "${var.spotinst_account}"
+
+  spotinst_token     = "${var.spotinst_token}"
+  spotinst_account   = "${var.spotinst_account}"
   ocean_cluster_name = "${var.ocean_cluster_name}"
   controller_id      = "${var.controller_id}"
   region             = "${var.region}"
@@ -26,7 +26,7 @@ module "spotinst_ocean_eks" {
   max_size         = "${var.max_size}"
   desired_capacity = "${var.min_size}"
 
-  ami         = "${var.ami}"
-  key_name    = "${var.key_name}"
+  ami             = "${var.ami}"
+  key_name        = "${var.key_name}"
   cluster_version = "${var.cluster_version}"
 }

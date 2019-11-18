@@ -1,5 +1,5 @@
 resource "aws_iam_role" "spotinst_eco_role" {
-  name = "spotinst-eco-role"
+  name        = "spotinst-eco-role"
   description = "Spotinst Eco access for RI management"
 
   assume_role_policy = <<EOF
