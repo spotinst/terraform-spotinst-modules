@@ -155,10 +155,7 @@ resource "kubernetes_deployment" "default" {
             name = "spotinst-kubernetes-cluster-controller-certs"
             mount_path = "/certs"
           }
-          volume_mount{
-            name = "tmp-volume"
-            mount_path = "/tmp"
-          }
+         
           volume_mount {
             mount_path = "/var/run/secrets/kubernetes.io/serviceaccount"
             name       = "${kubernetes_service_account.default.default_secret_name}"
@@ -211,11 +208,7 @@ resource "kubernetes_deployment" "default" {
             secret_name = "spotinst-kubernetes-cluster-controller-certs"
           }
         }
-        volume {
-          name = "tmp-volume"
-          empty_dir {
-          }
-        }
+      
 
 
         volume {
