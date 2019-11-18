@@ -232,5 +232,5 @@ resource "kubernetes_deployment" "default" {
 }
 
 data "external" "version" {
-  program = ["curl", "https://s3-eu-west-1.amazonaws.com/spotinst-vers/controller.json"]
+  program = ["curl", "https://spotinst-public.s3.amazonaws.com/integrations/kubernetes/cluster-controller/latest.json"]
 }
