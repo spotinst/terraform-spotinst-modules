@@ -72,7 +72,7 @@ resource "aws_iam_role_policy_attachment" "workers_AmazonEC2ContainerRegistryRea
 }
 
 module "eks" {
-  version            = "v4.0.2"                          # requiered for terraform version < 0.12
+  version            = "v4.0.2" # requiered for terraform version < 0.12
   source             = "terraform-aws-modules/eks/aws"
   cluster_name       = "${local.cluster_name}"
   subnets            = ["${module.vpc.private_subnets}"]
