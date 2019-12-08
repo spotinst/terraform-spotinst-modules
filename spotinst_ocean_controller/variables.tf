@@ -1,11 +1,11 @@
 variable "spotinst_token" {
-  description = "The token used when accessing your Spotinst account"
+  description = "Your Spotinst Personal Access token"
 }
 
 variable "spotinst_account" {
-  description = "Your Spotinst account"
+  description = "Your Spotinst account ID"
 }
 
 variable "spotinst_cluster_identifier" {
-  description = "This identifier should be identical to the clusterIdentifier that was configured on the Elastigroup."
+  description = "Your cluster identifier"
 }

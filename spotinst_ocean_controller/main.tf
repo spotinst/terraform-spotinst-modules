@@ -4,6 +4,7 @@ resource "kubernetes_config_map" "configmap" {
     namespace = "kube-system"
   }
 
+  # TODO(liran): Remove the `spotinst.` prefix.
   data = {
     "spotinst.token"              = "${var.spotinst_token}"
     "spotinst.account"            = "${var.spotinst_account}"
@@ -11,27 +12,10 @@ resource "kubernetes_config_map" "configmap" {
   }
 }
 
-resource "kubernetes_secret" "default" {
-  metadata {
-    name      = "spotinst-kubernetes-cluster-controller-certs"
-    namespace = "kube-system"
-
-    labels = {
-      k8s-app = "spotinst-kubernetes-cluster-controller"
-    }
-  }
-
-  type = "Opaque"
-}
-
 resource "kubernetes_service_account" "default" {
   metadata {
     name      = "spotinst-kubernetes-cluster-controller"
     namespace = "kube-system"
-
-    labels = {
-      k8s-app = "spotinst-kubernetes-cluster-controller"
-    }
   }
 
   automount_service_account_token = true
@@ -214,17 +198,6 @@ resource "kubernetes_deployment" "default" {
           name              = "spotinst-kubernetes-cluster-controller"
           image_pull_policy = "Always"
 
-          volume_mount {
-            name       = "spotinst-kubernetes-cluster-controller-certs"
-            mount_path = "/certs"
-          }
-
-          volume_mount {
-            mount_path = "/var/run/secrets/kubernetes.io/serviceaccount"
-            name       = "${kubernetes_service_account.default.default_secret_name}"
-            read_only  = true
-          }
-
           liveness_probe {
             http_get {
               path = "/healthcheck"
@@ -299,22 +272,6 @@ resource "kubernetes_deployment" "default" {
                 field_path = "metadata.namespace"
               }
             }
-          }
-        }
-
-        volume {
-          name = "spotinst-kubernetes-cluster-controller-certs"
-
-          secret {
-            secret_name = "spotinst-kubernetes-cluster-controller-certs"
-          }
-        }
-
-        volume {
-          name = "${kubernetes_service_account.default.default_secret_name}"
-
-          secret {
-            secret_name = "${kubernetes_service_account.default.default_secret_name}"
           }
         }
 

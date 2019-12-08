@@ -1,9 +1,9 @@
 provider "kubernetes" {
   config_context_cluster = ""
 
-  #   host = ""
-  #   username = ""
-  #   password = ""
+  # host     = ""
+  # username = ""
+  # password = ""
 }
 
 module "spotinst_ocean_controller" {
