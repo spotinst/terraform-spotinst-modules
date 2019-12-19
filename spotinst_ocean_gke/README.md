@@ -6,7 +6,7 @@
 * A Spotinst account [connected](https://api.spotinst.com/elastigroup-for-google-cloud/tutorials/connect-spotinst-to-a-gcp-account/) to your GCP project.
 * A Spotinst [token](https://api.spotinst.com/spotinst-api/administration/create-an-api-token/?hilite=%27token%27).
 
-## In order to configure the google terraform provider:
+#### In order to configure the google terraform provider credentials:
 Set the following env var with the credentials json key file
 export GOOGLE_CLOUD_KEYFILE_JSON=<PATH_TO_JSON_KEY_FILE>
 
