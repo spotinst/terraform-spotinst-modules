@@ -1,0 +1,15 @@
+spotinst_token="3b38880c97c6a6ee09d59cc1d32cb2b9819bdbe135b4520cc0be655b4ea39af0"
+spotinst_account="act-76cbdce5"
+project_id="spotinst-labs"
+is_regional=false
+cluster_name="amit-test"
+region="us-central1"
+network="default"
+subnetwork="default"
+ip_range_pods=""
+ip_range_services=""
+compute_engine_service_account="265168459660-compute@developer.gserviceaccount.com"
+skip_provisioners=false
+location="us-central1-a"
+create_service_account=false
+zones=["us-central1-a", "us-central1-b", "us-central1-f"]

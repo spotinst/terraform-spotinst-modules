@@ -1,0 +1,3 @@
+NAME
+default-pool
+default-node-pool

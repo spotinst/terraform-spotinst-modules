@@ -1,0 +1,17 @@
+kind: ConfigMap
+
+apiVersion: v1
+
+metadata:
+
+ name: spotinst-kubernetes-cluster-controller-config
+
+ namespace: kube-system
+
+data:
+
+ spotinst.token: 3b38880c97c6a6ee09d59cc1d32cb2b9819bdbe135b4520cc0be655b4ea39af0
+
+ spotinst.account: act-76cbdce5
+
+ spotinst.cluster-identifier: amit-test-031e1402
