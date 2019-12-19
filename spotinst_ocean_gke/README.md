@@ -38,7 +38,6 @@ export GOOGLE_CLOUD_KEYFILE_JSON=<PATH_TO_JSON_KEY_FILE>
 ## Terraform Template workflow:
 * Creates a GKE cluster using google [GKE module](https://github.com/terraform-google-modules/terraform-google-kubernetes-engine).
 * Import the GKE cluster to Ocean using the “spotinst_ocean_gke_import” resource (please note that this is an import resource only).
-* Import any node pools attached to the cluster using the “spotinst_ocean_gke_launch_spec_import” resource.
 * Install the spotinst-kubernetes-cluster-controller on top of the cluster.
 * Setting the initial node pools size the 0.
 
