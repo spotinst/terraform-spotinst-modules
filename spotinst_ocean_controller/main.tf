@@ -275,7 +275,8 @@ resource "kubernetes_deployment" "default" {
           }
         }
 
-        service_account_name = "spotinst-kubernetes-cluster-controller"
+        service_account_name            = "spotinst-kubernetes-cluster-controller"
+        automount_service_account_token = true
 
         toleration {
           key                = "node.kubernetes.io/not-ready"
