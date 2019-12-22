@@ -18,7 +18,7 @@ This module manages the following resources:
 Fill in the following arguments in `example.tf`:
 ```
 module "spotinst_ocean_controller" {
-  source = "github.com/spotinst/terraform-spotinst-modules//spotinst_ocean_controller/?ref=v0.1.0"
+  source = "github.com/spotinst/terraform-spotinst-modules//spotinst_ocean_controller"
 
   spotinst_account            = ""
   spotinst_token              = ""
@@ -30,7 +30,7 @@ From within `./example`, run the following commands:
 ```
 terraform get
 terraform init
-terrafomr apply
+terraform apply
 ```
 
 You will see `Apply complete!` if your plan is applied successfully.
