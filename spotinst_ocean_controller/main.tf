@@ -106,6 +106,32 @@ resource "kubernetes_cluster_role" "default" {
   }
 
   # ---------------------------------------------------------------------------
+  # Required by the Spotinst Cleanup feature.
+  # ---------------------------------------------------------------------------
+
+  rule {
+    api_groups = [""]
+    resources  = ["nodes"]
+    verbs      = ["delete"]
+  }
+
+  # ---------------------------------------------------------------------------
+  # Required by the Spotinst CSR approval feature.
+  # ---------------------------------------------------------------------------
+
+  rule {
+    api_groups = ["certificates.k8s.io"]
+    resources  = ["certificatesigningrequests"]
+    verbs      = ["get", "list"]
+  }
+
+  rule {
+    api_groups = ["certificates.k8s.io"]
+    resources  = ["certificatesigningrequests/approval"]
+    verbs      = ["patch", "update"]
+  }
+
+  # ---------------------------------------------------------------------------
   # Required by the Spotinst Auto Update feature.
   # ---------------------------------------------------------------------------
 
@@ -193,8 +219,40 @@ resource "kubernetes_deployment" "default" {
       }
 
       spec {
+        priority_class_name = "system-cluster-critical"
+
+        affinity {
+          node_affinity {
+            preferred_during_scheduling_ignored_during_execution {
+              weight = 100
+              preference {
+                match_expressions {
+                  key      = "node-role.kubernetes.io/master"
+                  operator = "Exists"
+                }
+              }
+            }
+          }
+
+          pod_affinity {
+            preferred_during_scheduling_ignored_during_execution {
+              weight = 100
+              pod_affinity_term {
+                label_selector {
+                  match_expressions {
+                    key      = "k8s-app"
+                    operator = "In"
+                    values   = ["spotinst-kubernetes-cluster-controller"]
+                  }
+                }
+                topology_key = "kubernetes.io/hostname"
+              }
+            }
+          }
+        }
+
         container {
-          image             = "spotinst/kubernetes-cluster-controller:${data.external.version.result["version"]}"
+          image             = "spotinst/kubernetes-cluster-controller:1.0.54"
           name              = "spotinst-kubernetes-cluster-controller"
           image_pull_policy = "Always"
 
@@ -299,8 +357,4 @@ resource "kubernetes_deployment" "default" {
       }
     }
   }
-}
-
-data "external" "version" {
-  program = ["curl", "https://spotinst-public.s3.amazonaws.com/integrations/kubernetes/cluster-controller/latest.json"]
 }
