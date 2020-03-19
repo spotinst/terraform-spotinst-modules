@@ -13,6 +13,10 @@ This module manages the following resources:
 * spotinst_account
 * spotinst_token
 * spotinst_cluster_identifier
+* base_url
+* proxy_url
+* enable_csr_approval
+* disable_auto_update
 
 ## Example
 Fill in the following arguments in `example.tf`:

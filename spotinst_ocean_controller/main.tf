@@ -4,11 +4,17 @@ resource "kubernetes_config_map" "configmap" {
     namespace = "kube-system"
   }
 
-  # TODO(liran): Remove the `spotinst.` prefix.
   data = {
-    "spotinst.token"              = "${var.spotinst_token}"
-    "spotinst.account"            = "${var.spotinst_account}"
+    # Credentials.
+    "spotinst.token"   = "${var.spotinst_token}"
+    "spotinst.account" = "${var.spotinst_account}"
+
+    # Configuration.
     "spotinst.cluster-identifier" = "${var.spotinst_cluster_identifier}"
+    base-url                      = "${var.base_url}"
+    proxy-url                     = "${var.proxy_url}"
+    enable-csr-approval           = "${var.enable_csr_approval}"
+    disable-auto-update           = "${var.disable_auto_update}"
   }
 }
 
@@ -298,6 +304,50 @@ resource "kubernetes_deployment" "default" {
               config_map_key_ref {
                 name = "spotinst-kubernetes-cluster-controller-config"
                 key  = "spotinst.cluster-identifier"
+              }
+            }
+          }
+
+          env {
+            name = "BASE_SPOTINST_URL"
+
+            value_from {
+              config_map_key_ref {
+                name = "spotinst-kubernetes-cluster-controller-config"
+                key  = "base-url"
+              }
+            }
+          }
+
+          env {
+            name = "PROXY_URL"
+
+            value_from {
+              config_map_key_ref {
+                name = "spotinst-kubernetes-cluster-controller-config"
+                key  = "proxy-url"
+              }
+            }
+          }
+
+          env {
+            name = "ENABLE_CSR_APPROVAL"
+
+            value_from {
+              config_map_key_ref {
+                name = "spotinst-kubernetes-cluster-controller-config"
+                key  = "enable-csr-approval"
+              }
+            }
+          }
+
+          env {
+            name = "DISABLE_AUTO_UPDATE"
+
+            value_from {
+              config_map_key_ref {
+                name = "spotinst-kubernetes-cluster-controller-config"
+                key  = "disable-auto-update"
               }
             }
           }
