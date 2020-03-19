@@ -38,7 +38,7 @@ resource "kubernetes_cluster_role" "default" {
 
   rule {
     api_groups = ["apps"]
-    resources  = ["deployments", "daemonsets", "statefulsets"]
+    resources  = ["deployments", "daemonsets", "statefulsets", "replicasets"]
     verbs      = ["get", "list"]
   }
 
@@ -252,7 +252,7 @@ resource "kubernetes_deployment" "default" {
         }
 
         container {
-          image             = "spotinst/kubernetes-cluster-controller:1.0.54"
+          image             = "spotinst/kubernetes-cluster-controller:1.0.57"
           name              = "spotinst-kubernetes-cluster-controller"
           image_pull_policy = "Always"
 
