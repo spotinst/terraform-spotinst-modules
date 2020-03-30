@@ -1,3 +1,9 @@
+# Deprecation Notice
+
+Please use the [official Spotinst modules from the Terraform registry](https://registry.terraform.io/modules/spotinst).
+
+---
+
 # Spotinst Terraform Modules
 This repo contains reusable terraform modules developed in-house at Spotinst.
 
